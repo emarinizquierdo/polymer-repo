@@ -1,0 +1,208 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id='steps-line'>
+  <link rel="import" type='css' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <template>
+    <div class="steps-wizard-wrapper">
+      <ul class="steps">
+        <template is="dom-repeat" items="{{steps}}">
+          <li style$="[[_computeWidth(steps.length)]]" class$="{{_isActive(active, index)}}{{_hasAction(item)}}">
+            <span class="before-line"></span>
+            <div class="checkmark">
+              <div class="checkmark_stem"></div>
+              <div class="checkmark_kick"></div>
+            </div>
+    	    	<div class="step-text">{{item.name}}</div>
+            <span class="after-line"></span>
+          </li>
+        </template>
+      </ul>
+    </div>
+
+    <style>
+
+      :host {
+
+      }
+
+      .steps-wizard-wrapper {
+        height: 120px;
+        margin: 0 auto
+      }
+
+      .steps-wizard-wrapper .steps {
+        list-style: none;
+        height: 1px;
+        padding: 0;
+        top: 35px;
+        position: relative;
+      }
+
+      .steps-wizard-wrapper .before-line,
+      .steps-wizard-wrapper .after-line{
+        width: 50%;
+        height: 2px;
+        background-color: #bdbdbd;
+        display: block;
+        position: absolute;
+        margin-top: 19px;
+        z-index: -1;
+      }
+
+      .steps-wizard-wrapper .after-line{
+        right: 0;
+      }
+
+      .steps-wizard-wrapper li.active .before-line,
+      .steps-wizard-wrapper li.active:not(.current) .after-line{
+        background-color: #86c82d;
+      }
+
+      .steps-wizard-wrapper li:first-child .before-line,
+      .steps-wizard-wrapper li:last-of-type .after-line{
+        display: none;
+      }
+
+      .steps-wizard-wrapper li {
+        float: left;
+        display: inline-block;
+        margin: -20px 0 0;
+        padding: 0;
+        text-align: center;
+        position: relative;
+        z-index: 5;
+        height: 60px
+      }
+
+      .steps-wizard-wrapper li.active,
+      .steps-wizard-wrapper li.active:after,
+      .steps-wizard-wrapper li.active:before {
+        color: #86c82d;
+        border-color: #86c82d
+      }
+
+      .steps-wizard-wrapper li:after {
+        content: "";
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+        border: 2px solid #bdbdbd;
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-block;
+        z-index: 5;
+        background: #fff;
+        -webkit-box-shadow: 0 4px 2px 2px #ECE9E9;
+        box-shadow: 0 3px 2px 0 #ECE9E9;
+        margin: auto;
+      }
+
+      .steps-wizard-wrapper li.active:after {
+        border-color: #86c82d;
+        color: #107bcc;
+      }
+
+      .steps-wizard-wrapper li.current:after {
+        border-color: #0266b8;
+      }
+
+      .step-text {
+        position: absolute;
+        width: 100%;
+        top: 35px;
+        color: #aeaeae;
+        font-size: 15px;
+        font-family: bbvaDefaultFont,Arial,"Helvetica Neue",Helvetica,sans-serif !important;
+        margin-top: 10px;
+      }
+
+      .steps-wizard-wrapper li.active .step-text {
+        color: #86c82d
+      }
+
+      .steps-wizard-wrapper li.current .step-text {
+        color: #0266b8
+      }
+
+      .steps-wizard-wrapper .checkmark {
+        display: none;
+        -ms-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        position: absolute;
+        margin: 2px 0px 0px 17px;
+      }
+
+      .steps-wizard-wrapper li.active .checkmark{
+        display: inline-block;
+      }
+
+      .steps-wizard-wrapper li.current .checkmark{
+        display: none;
+      }
+
+      .steps-wizard-wrapper .checkmark_circle {
+        position: absolute;
+        width:22px;
+        height:22px;
+        border-radius:11px;
+        left:0;
+        top:0;
+      }
+
+      .steps-wizard-wrapper .checkmark_stem {
+        position: absolute;
+        width: 2px;
+        height: 16px;
+        background-color: #86c82d;
+        left: 14px;
+        top: 0px;
+      }
+
+      .steps-wizard-wrapper .checkmark_kick {
+        position: absolute;
+        width: 9px;
+        height: 2px;
+        background-color: #86c82d;
+        left: 7px;
+        top: 15px;
+      }
+
+    </style>
+  </template>
+</dom-module>
+
+<script>
+
+  Polymer({
+    is: 'steps-line',
+    properties: {
+      steps: {
+        type:Array
+      },
+      active: {
+        type:Number
+      }
+    },
+    ready: function() {
+      this.steps;
+      this.active;
+    },
+    _computeWidth: function (nSteps) {
+      return 'width: ' + 100/nSteps + '%';
+    },
+    _isActive : function(length, index){
+      if(this.active > index){
+        return 'active';
+      }else if(this.active == index){
+        return 'active current';
+      }else{
+        return '';
+      }
+    },
+    _hasAction: function( item ){
+      return (item.action && (typeof item.action == 'function')) ? ' clickable' : '';
+    }
+  });
+
+</script>
